@@ -1,18 +1,7 @@
 from main import BooksCollector
 import pytest 
 
-@pytest.fixture
-def collector():
-    c = BooksCollector()
-    c.books_genre = {
-        'Гордость и предубеждение и зомби': 'Фантастика',
-        'Что делать, если ваш кот хочет вас убить': 'Ужасы',
-        'Война и мир': 'Классика',
-        'Дюна': 'Фантастика'
-    }
-    c.genre = ['Фантастика', 'Ужасы', 'Детективы', 'Мультфильмы', 'Комедии']
-    c.genre_age_rating = ['Ужасы', 'Детективы']
-    return c 
+
 
 # класс TestBooksCollector объединяет набор тестов, которыми мы покрываем наше приложение BooksCollector
 # обязательно указывать префикс Test
@@ -32,7 +21,7 @@ class TestBooksCollector:
 
         # проверяем, что добавилось именно две
         # словарь books_rating, который нам возвращает метод get_books_rating, имеет длину 2
-        assert len(collector.get_books_rating()) == 2
+        assert len(collector.get_books_genre()) == 2
 
     # напиши свои тесты ниже
     # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
@@ -73,5 +62,12 @@ class TestBooksCollector:
         assert book_title not in collector.favorites
 
     def test_get_list_of_favorites_books(self, collector):
+        collector.add_book_in_favorites('Дюна')
+        collector.add_book_in_favorites('Гордость и предубеждение и зомби')
         result = collector.get_list_of_favorites_books()
-        assert isinstance(result, list)    
+        assert result == ['Дюна', 'Гордость и предубеждение и зомби']    
+
+
+    def test_add_new_book_add_one_book(self, collector):
+        collector.add_new_book('Мастер и Маргарита')
+        assert collector.get_book_genre('Мастер и Маргарита') == ''  
